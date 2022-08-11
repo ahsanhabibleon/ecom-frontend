@@ -1,0 +1,31 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: rgba(var(--dark-bg-rgb), 1);
+  color: var(--primary-color);
+  font-weight: 500;
+  outline: none;
+  border: 2px solid rgba(var(--dark-bg-rgb), 1);
+  cursor: pointer;
+  gap: 5px;
+  transition: color 0.5s ease, background-color 0.5s ease;
+  &:hover {
+    color: var(--primary-color);
+    background-color: rgba(var(--dark-bg-rgb), 0.7);
+  }
+}
+.btn_small {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+.btn_outline {
+  background-color: transparent;
+  color: rgba(var(--dark-bg-rgb), 1);
+}
+.btn_disbaled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

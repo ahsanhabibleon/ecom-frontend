@@ -1,0 +1,39 @@
+.d-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+.align-items-center {
+  align-items: center;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-column {
+  flex-direction: column;
+}
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 15px;
+  @media (max-width: 1199px) {
+    max-width: 900px;
+  }
+  @media (max-width: 991px) {
+    max-width: 600px;
+  }
+  @media (max-width: 767px) {
+    max-width: 100%;
+  }
+}
+.text-center {
+  text-align: center;
+}

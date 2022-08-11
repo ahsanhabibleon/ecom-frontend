@@ -1,0 +1,22 @@
+.banner {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.banner_content {
+  gap: 30px;
+  height: 300px;
+  padding: 50px;
+  display: flex !important;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  background: rgba(var(--primary-rgb), 0.8);
+  h1 {
+    max-width: 500px;
+    // color: rgba(var(--dark-bg-rgb), 0.8);
+    color: #fff;
+    line-height: 4.8rem;
+    margin: 0;
+  }
+}

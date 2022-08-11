@@ -1,0 +1,12 @@
+.product_list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 15px;
+}
+.products {
+  padding: 60px 0;
+  h3 {
+    margin-bottom: 30px;
+  }
+}

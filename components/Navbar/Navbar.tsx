@@ -1,13 +1,18 @@
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Styles from "./Navbar.module.scss"
 import jwt_decode from "jwt-decode";
-import { Button, Dropdown, Menu, notification, Space } from 'antd';
+import { Badge, Button, Dropdown, Menu, notification, Space } from 'antd';
 import { DownOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { Store } from '../../store';
+import { ProductDataTypes } from '../ProductList/ProductList.types';
 
 const Navbar = () => {
 
     const [user, setUser] = useState<any>(null);
+
+    // @ts-ignore
+    const { state: { cart: { cartItems } } } = useContext(Store);
 
     const logout = () => {
         localStorage.removeItem("token");
@@ -68,7 +73,9 @@ const Navbar = () => {
                     <span className={Styles.icon}>
                         <ShoppingCartOutlined />
                     </span>
-                    Cart
+                    <Badge style={{ top: -8, right: -10 }} count={cartItems.reduce((a: number, c: ProductDataTypes) => a + (c?.quantity || 0), 0)}>
+                        Cart
+                    </Badge>
                 </a>
             </Link>
         </div>

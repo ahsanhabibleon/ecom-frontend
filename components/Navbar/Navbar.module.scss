@@ -1,4 +1,5 @@
 .navbar_item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -19,6 +20,8 @@
 .icon {
   font-size: 16px;
   color: var(--warning-color);
+  position: relative;
+  margin-top: -2px;
 }
 
 .profile_dropdown {

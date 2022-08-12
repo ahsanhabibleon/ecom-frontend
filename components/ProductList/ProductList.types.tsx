@@ -1,5 +1,5 @@
 export interface ProductDataTypes {
-    id: number | string;
+    _id?: number | string;
     brand: string
     category: string
     countInStock: number
@@ -10,6 +10,7 @@ export interface ProductDataTypes {
     price: number
     rating: number
     slug: string
+    quantity?: number
 }
 
 export interface ProductReducerProps {

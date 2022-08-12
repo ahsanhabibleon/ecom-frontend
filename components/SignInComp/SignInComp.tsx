@@ -2,11 +2,11 @@ import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, notification } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
 
-const SignInComp: React.FC = () => {
+const SignInComp = ({ redirectUrl }: { redirectUrl: string }) => {
+
     const router = useRouter();
-    const redir = (router?.query?.redir || '') as string;
+
     const onFinish = (values: any) => {
         console.log('Received values of form: ', values);
         sendPostRequest(values);
@@ -29,7 +29,7 @@ const SignInComp: React.FC = () => {
                         notification.success({
                             message: 'Successfully signed in!',
                         })
-                        router.push('/' + redir)
+                        router.push('/' + redirectUrl)
                     } else {
                         notification.error({
                             message: 'Error',
@@ -50,11 +50,6 @@ const SignInComp: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-            router.push('/' + redir)
-        }
-    }, [])
 
     return (
         <Form

@@ -1,0 +1,23 @@
+.cart_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.remove_icon {
+  color: crimson;
+  cursor: pointer;
+  padding: 5px;
+}
+.item_quantity {
+  span:not(:nth-of-type(2)) {
+    font-size: 12px;
+    padding: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+  }
+  span:nth-of-type(2) {
+    padding: 5px 20px;
+  }
+}

@@ -1,0 +1,26 @@
+.badgeParent {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: -14px;
+  left: 100%;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 20px;
+  padding: 5px;
+  background-color: crimson;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.count {
+  font-size: 12px;
+  color: white;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 40px;
+}

@@ -1,5 +1,21 @@
-.cart_items {
-}
 .cart_page {
   padding: 60px 0;
+}
+
+.process_to_checkout {
+  h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+}
+
+.subtotal {
+  color: crimson;
+}
+
+.total_quantity {
+  font-size: 18px;
+  color: #999;
+  font-weight: 400;
 }

@@ -12,7 +12,7 @@ const ProductSingle = (props: { product: ProductDataTypes | null, className?: st
 
     const handleClick = (event: any) => {
         event.preventDefault();
-        const existedItem = state.cart.cartItems.find((c: ProductDataTypes) => c._id === product?._id)
+        const existedItem = state?.cart?.cartItems?.find((c: ProductDataTypes) => c._id === product?._id)
         const quantity = existedItem ? (existedItem.quantity + 1) : 1
 
         if (!product?.countInStock || (product?.countInStock < quantity)) {

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import CartComp from '../../components/CartComp';
 import MainLayout from '../../components/MainLayout'
 
@@ -12,6 +12,7 @@ const Cart = () => {
             router.push('/sign-in')
         }
     }, [])
+
     return (
         <MainLayout>
             <Head>

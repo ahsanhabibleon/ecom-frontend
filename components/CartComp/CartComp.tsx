@@ -1,22 +1,71 @@
+import { DeleteOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Empty, Row } from 'antd';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useContext } from 'react'
 import { Store } from '../../store';
 import { ProductDataTypes } from '../ProductList/ProductList.types';
-import Styles from './CartComp.module.scss'
+import Styles from './CartComp.module.scss';
+import CartItem from './CartItems';
 
 const CartComp = () => {
     // @ts-ignore
-    const { state: { cart: { cartItems } }, dispatch } = useContext(Store);
-    console.log({ cartItems })
+    const { state, dispatch } = useContext(Store);
+    const cartItems = state?.cart?.cartItems || []
+
     return (
         <div className={Styles.cart_page}>
             <h3>Cart Items</h3>
-            <div className={Styles.cart_items}>
-                {cartItems?.map((item: ProductDataTypes) => {
-                    <div></div>
-                })}
-            </div>
+
+            {cartItems?.length ?
+                <Row gutter={30}>
+                    <Col span={17} className={Styles.cart_items}>
+                        {cartItems?.map((item: ProductDataTypes) => (
+                            <Card key={item._id}>
+                                <CartItem propObj={{ dispatch, item }} />
+                            </Card>
+                        ))}
+                    </Col>
+
+                    <Col span={7} className={Styles.process_to_checkout}>
+                        <Card>
+                            <div>
+                                <h4>
+                                    Subtotal: {" "}
+                                    <span className={Styles.subtotal}>
+                                        ${cartItems.reduce((a: number, c: ProductDataTypes) => a + ((c?.price * (c?.quantity || 0))), 0)}
+                                    </span>
+                                    {" "}
+                                    <span className={Styles.total_quantity}>
+                                        ({cartItems.reduce((a: number, c: ProductDataTypes) => a + (c?.quantity || 0), 0)} items)
+                                    </span>
+                                </h4>
+                                <Button type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", fontWeight: 600 }}>
+                                    Proceed to Checkout
+                                </Button>
+                                <br />
+                                or
+                                <br />
+                                <Link href="/">Browse more products</Link>
+                            </div>
+                        </Card>
+                    </Col>
+                </Row> :
+                <Empty
+                    description={
+                        <span>
+                            Cart is empty!{' '}
+                            <Link href="/">Browse products</Link>
+                        </span>
+                    }>
+                </Empty>
+            }
+
         </div>
     )
 }
 
 export default CartComp
+
+
+

@@ -1,5 +1,6 @@
-import { createContext, ReactNode, useReducer } from "react";
+import { createContext, ReactNode, useEffect, useReducer } from "react";
 import { ProductDataTypes } from "../components/ProductList/ProductList.types";
+import { useLocalStorage } from "../hooks";
 
 export type CartType = {
     cartItems: ProductDataTypes[]
@@ -24,14 +25,44 @@ export const Store = createContext<InitialStateType>(initialState);
 
 
 const storeReducer = (state: InitialStateType, action: ReducerActionProps) => {
+    let cartItems = [];
+
     switch (action.type) {
+
+        case "STORE_CART_ITEMS_IN_LOCAL_STORAGE": {
+            return {
+                ...state,
+                cart: { ...state.cart, cartItems: action.payload }
+            }
+        }
+
         case 'ADD_ITEM_TO_CART':
             const newItem = action.payload;
-            const existedItem = state.cart.cartItems.find(c => c._id === newItem._id)
+            const existedItem = state?.cart?.cartItems?.find(c => c._id === newItem._id)
 
-            const cartItems = existedItem ? state.cart.cartItems.map((item) =>
-                item._id == existedItem._id ? newItem : item
-            ) : [...state.cart.cartItems, newItem];
+            cartItems = existedItem ? state?.cart?.cartItems?.map((item) =>
+                item._id === existedItem._id ? newItem : item
+            ) : [...state?.cart?.cartItems, newItem];
+
+            return {
+                ...state,
+                cart: { ...state.cart, cartItems }
+            }
+
+
+        case 'REMOVE_ITEM_FROM_CART':
+            cartItems = state?.cart?.cartItems?.filter((item) =>
+                item._id !== action.payload.id
+            )
+
+            return {
+                ...state,
+                cart: { ...state.cart, cartItems }
+            }
+
+        case "UPDATE_QUANTITY":
+            cartItems = state?.cart?.cartItems?.map((item) =>
+                item._id === action.payload.item._id ? action.payload.item : item)
 
             return {
                 ...state,
@@ -45,7 +76,11 @@ const storeReducer = (state: InitialStateType, action: ReducerActionProps) => {
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(storeReducer, initialState)
+
+    useLocalStorage("cartItems", state, initialState, dispatch)
+
     const value = { state, dispatch };
+
     // @ts-ignore
     return <Store.Provider value={value}>{children}</Store.Provider>
 }

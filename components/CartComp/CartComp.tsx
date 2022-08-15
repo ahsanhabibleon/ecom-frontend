@@ -1,7 +1,6 @@
-import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Empty, Row } from 'antd';
-import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useContext } from 'react'
 import { Store } from '../../store';
 import { ProductDataTypes } from '../ProductList/ProductList.types';
@@ -9,10 +8,13 @@ import Styles from './CartComp.module.scss';
 import CartItem from './CartItems';
 
 const CartComp = () => {
+    const router = useRouter();
     // @ts-ignore
     const { state, dispatch } = useContext(Store);
     const cartItems = state?.cart?.cartItems || []
-
+    const handleCheckout = () => {
+        router.push('/sign-in?redirect=/shipping')
+    }
     return (
         <div className={Styles.cart_page}>
             <h3>Cart Items</h3>
@@ -40,7 +42,7 @@ const CartComp = () => {
                                         ({cartItems.reduce((a: number, c: ProductDataTypes) => a + (c?.quantity || 0), 0)} items)
                                     </span>
                                 </h4>
-                                <Button type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", fontWeight: 600 }}>
+                                <Button onClick={handleCheckout} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", fontWeight: 600 }}>
                                     Proceed to Checkout
                                 </Button>
                                 <br />

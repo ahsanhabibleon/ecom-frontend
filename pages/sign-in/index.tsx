@@ -8,11 +8,11 @@ import SignInComp from '../../components/SignInComp';
 const SignIn = () => {
     const [loading, setLoading] = useState(true)
     const router = useRouter();
-    const redirectUrl = (router?.query?.redirectUrl || '') as string;
+    const redirect = (router?.query?.redirect || '') as string;
 
     useEffect(() => {
         if (localStorage?.getItem('token')) {
-            router.push('/' + redirectUrl)
+            router.push('/' + redirect)
         } else {
             setLoading(false)
         }
@@ -26,7 +26,7 @@ const SignIn = () => {
                 </Head>
                 <div className='container'>
                     <div className="login_register_container">
-                        <SignInComp redirectUrl={redirectUrl} />
+                        <SignInComp redirectUrl={redirect} />
                     </div>
                 </div>
             </> : <Spin className='full-page-loading' />}

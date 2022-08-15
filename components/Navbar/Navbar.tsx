@@ -15,8 +15,6 @@ const Navbar = () => {
     // @ts-ignore
     const { state } = useContext(Store);
 
-    console.log({ state })
-
     const logout = () => {
         localStorage.removeItem("token");
         window.location.reload();

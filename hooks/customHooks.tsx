@@ -9,7 +9,7 @@ export const useLocalStorage = (key: string, state: InitialStateType, initialSta
         if (cartItemsFromLocal) {
             //checking if there already is a state in localstorage
             dispatch({
-                type: "STORE_CART_ITEMS_IN_LOCAL_STORAGE",
+                type: "STORE_STATE_IN_LOCAL_STORAGE",
                 payload: cartItemsFromLocal,
                 //if yes, update the current state with the stored one
             });
@@ -18,7 +18,7 @@ export const useLocalStorage = (key: string, state: InitialStateType, initialSta
 
     useEffect(() => {
         if (typeof window !== 'undefined' && state !== initialState) {
-            localStorage.setItem(key, JSON.stringify(state?.cart?.cartItems || []));
+            localStorage.setItem(key, JSON.stringify(state));
             //create and/or set a new localstorage variable called "state"
         }
     }, [state]);

@@ -1,0 +1,15 @@
+.addressRow {
+  display: flex;
+  gap: 20px;
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    max-width: 60px;
+    width: 100%;
+    margin-bottom: 0;
+  }
+}
+.editBtn {
+  display: inline-block;
+  margin-top: 15px;
+}

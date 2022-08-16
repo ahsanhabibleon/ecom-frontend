@@ -13,7 +13,7 @@ const CartComp = () => {
     const { state, dispatch } = useContext(Store);
     const cartItems = state?.cart?.cartItems || []
     const handleCheckout = () => {
-        router.push('/sign-in?redirect=/shipping')
+        router.push('/sign-in?redirect=shipping')
     }
     return (
         <div className={Styles.cart_page}>

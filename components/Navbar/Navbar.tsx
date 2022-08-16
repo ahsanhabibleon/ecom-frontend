@@ -17,6 +17,7 @@ const Navbar = () => {
 
     const logout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("store");
         window.location.reload();
         notification.success({
             message: 'Successfully logged out!',
@@ -38,13 +39,6 @@ const Navbar = () => {
                     label: <Link href="/profile">Profile</Link>,
                     key: '0',
                 },
-                // {
-                //     label: <a href="https://www.aliyun.com">2nd menu item</a>,
-                //     key: '1',
-                // },
-                // {
-                //     type: 'divider',
-                // },
                 {
                     label: 'Logout',
                     key: '3',

@@ -29,11 +29,8 @@ const storeReducer = (state: InitialStateType, action: ReducerActionProps) => {
 
     switch (action.type) {
 
-        case "STORE_CART_ITEMS_IN_LOCAL_STORAGE": {
-            return {
-                ...state,
-                cart: { ...state.cart, cartItems: action.payload }
-            }
+        case "STORE_STATE_IN_LOCAL_STORAGE": {
+            return action.payload
         }
 
         case 'ADD_ITEM_TO_CART':
@@ -69,6 +66,18 @@ const storeReducer = (state: InitialStateType, action: ReducerActionProps) => {
                 cart: { ...state.cart, cartItems }
             }
 
+        case "SAVE_SHIPPING_ADDRESS":
+            return {
+                ...state,
+                cart: { ...state.cart, shippingAddress: action.payload }
+            }
+
+        case "SAVE_PAYMENT_METHOD":
+            return {
+                ...state,
+                cart: { ...state.cart, paymentMethod: action.payload }
+            }
+
         default:
             return state
     }
@@ -77,7 +86,7 @@ const storeReducer = (state: InitialStateType, action: ReducerActionProps) => {
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(storeReducer, initialState)
 
-    useLocalStorage("cartItems", state, initialState, dispatch)
+    useLocalStorage("store", state, initialState, dispatch)
 
     const value = { state, dispatch };
 

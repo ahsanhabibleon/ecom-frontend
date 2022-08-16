@@ -1,64 +1,16 @@
 import {
-    AutoComplete,
     Button,
-    Cascader,
-    Checkbox,
-    Col,
     Form,
     Input,
-    InputNumber,
-    notification,
-    Row,
     Select,
 } from 'antd';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Store } from '../../store';
 import { OptionTypes } from './ShippingComp.types';
 import { getDistricts, getDivisions } from './utils';
 
 const { Option } = Select;
-
-const residences = [
-    {
-        value: 'dhaka',
-        label: 'Dhaka',
-        children: [
-            {
-                value: 'dhaka',
-                label: 'Dhaka',
-            },
-            {
-                value: 'narayangonj',
-                label: 'Narayangonj',
-            },
-            {
-                value: 'munshigonj',
-                label: 'Munshigonj',
-            },
-            {
-                value: 'keranigonj',
-                label: 'Keranigonj',
-            },
-        ],
-    },
-    {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [
-            {
-                value: 'nanjing',
-                label: 'Nanjing',
-                children: [
-                    {
-                        value: 'zhonghuamen',
-                        label: 'Zhong Hua Men',
-                    },
-                ],
-            },
-        ],
-    },
-];
-
 const formItemLayout = {
     labelCol: {
         xs: { span: 24 },
@@ -84,7 +36,19 @@ const tailFormItemLayout = {
 
 const ShippingComp: React.FC = () => {
     const router = useRouter();
-    const redir = (router?.query?.redir || '') as string;
+
+    // @ts-ignore
+    const { state, dispatch } = useContext(Store)
+    const [defaultFormValue, setDefaultFormValue] = useState({
+        name: state?.cart?.shippingAddress?.name,
+        country_of_residence: state?.cart?.shippingAddress?.country_of_residence,
+        division: state?.cart?.shippingAddress?.division,
+        district: state?.cart?.shippingAddress?.district,
+        prefix: state?.cart?.shippingAddress?.prefix || '880',
+        phone: state?.cart?.shippingAddress?.phone,
+        street: state?.cart?.shippingAddress?.street,
+        post_code: state?.cart?.shippingAddress?.post_code
+    })
     const [divisions, setDivisions] = useState<OptionTypes[]>([])
     const [districts, setDistricts] = useState([])
 
@@ -99,51 +63,20 @@ const ShippingComp: React.FC = () => {
         </Form.Item>
     );
 
-    const sendPostRequest = async (payload: any) => {
-        try {
-            await fetch('/api/users/signup', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data?.token) {
-                        localStorage.setItem('token', data?.token || '');
-                        notification.success({
-                            message: 'Successfully registered!',
-                        })
-                        router.push('/' + redir)
-                    } else {
-                        notification.error({
-                            message: 'Error',
-                            description: data?.message || "Something went wrong"
-                        })
-                    }
-                })
-                .catch((error) => {
-                    notification.error({
-                        message: error?.message || 'Something went wrong!',
-                    })
-                })
-
-        } catch (error: any) {
-            notification.error({
-                message: error?.message || 'Something went wrong!',
-            })
-        }
-    };
-
-    const onFinish = (values: any) => {
-        console.log('Received values of form: ', values);
-        sendPostRequest({
-            name: values.name,
-            email: values.email,
-            password: values.password,
+    const onFinish = async (values: any) => {
+        await dispatch({
+            type: 'SAVE_SHIPPING_ADDRESS', payload: {
+                name: values.name,
+                country_of_residence: values.country_of_residence,
+                division: values.division,
+                district: values.district,
+                prefix: values.prefix,
+                phone: values.phone,
+                street: values.street,
+                post_code: values.post_code
+            }
         })
+        await router.push('/payment')
     };
 
     const onChange = (changed: any, values: any) => {
@@ -176,6 +109,19 @@ const ShippingComp: React.FC = () => {
         }
     }, [])
 
+    useEffect(() => {
+        setDefaultFormValue({
+            name: state?.cart?.shippingAddress?.name,
+            country_of_residence: state?.cart?.shippingAddress?.country_of_residence,
+            division: state?.cart?.shippingAddress?.division,
+            district: state?.cart?.shippingAddress?.district,
+            prefix: state?.cart?.shippingAddress?.prefix || '880',
+            phone: state?.cart?.shippingAddress?.phone,
+            street: state?.cart?.shippingAddress?.street,
+            post_code: state?.cart?.shippingAddress?.post_code
+        })
+    }, [state?.cart?.shippingAddress])
+
     return (
         <Form
             {...formItemLayout}
@@ -183,9 +129,7 @@ const ShippingComp: React.FC = () => {
             name="shipping"
             onFinish={onFinish}
             onValuesChange={onChange}
-            initialValues={{
-                prefix: '880',
-            }}
+            initialValues={defaultFormValue}
             scrollToFirstError
             className='login_register_form'
             style={{ maxWidth: '500px' }}
@@ -257,6 +201,22 @@ const ShippingComp: React.FC = () => {
                         <Option key={d?.value} value={d?.value}>{d?.label || ''}</Option>
                     ))}
                 </Select>
+            </Form.Item>
+
+            <Form.Item
+                name="street"
+                label="Street"
+                rules={[{ required: true, message: 'Please input your street address', whitespace: true }]}
+            >
+                <Input placeholder="Street" />
+            </Form.Item>
+
+            <Form.Item
+                name="post_code"
+                label="Post Code"
+                rules={[{ required: true, message: 'Please input your post code', whitespace: true }]}
+            >
+                <Input type='number' placeholder="Post Code" />
             </Form.Item>
 
             <Form.Item

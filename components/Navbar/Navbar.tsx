@@ -48,7 +48,6 @@ const Navbar = () => {
         />
     );
 
-
     return (
         <div className={"d-flex align-items-center"}>
             {!user ? <Link href="/sign-in" passHref>

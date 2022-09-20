@@ -4,7 +4,7 @@ import Image from "next/image"
 import Styles from './CartItem.module.scss';
 import { PropObjTypes } from "./CartItem.types";
 
-const CartItem = ({ propObj }: { propObj: PropObjTypes }) => {
+const CartItem = ({ propObj, forPreview = false }: { propObj: PropObjTypes, forPreview?: boolean }) => {
 
     const { item, dispatch } = propObj
 
@@ -31,26 +31,31 @@ const CartItem = ({ propObj }: { propObj: PropObjTypes }) => {
                 {item?.image ? <Image src={item.image} alt={item.name} width={50} height={50} /> : 'No image'}
             </div>
             <div className={Styles.item_name}>{item?.name || ''}</div>
+            {forPreview && <span>{item.quantity}</span>}
             <div className={Styles.item_price}>${item?.price || 'Not available'}</div>
-            <div className={Styles.item_quantity}>
-                <span className={!item?.quantity || item?.quantity < 2 ? 'disabled' : ''} onClick={() => updateQuantity('decrement')}>
-                    <MinusOutlined />
-                </span>
-                <span>{item.quantity}</span>
-                <span className={(item?.quantity || item?.quantity === 0) && item?.quantity < item.countInStock ? '' : 'disabled'} onClick={() => updateQuantity('increment')}>
-                    <PlusOutlined />
-                </span>
-            </div>
-            <Popconfirm
-                className={Styles.remove_icon}
-                title="Remove this item from cart?"
-                placement="topRight"
-                onConfirm={removeItemFromCart}
-                okText="Yes"
-                cancelText="No"
-            >
-                <DeleteOutlined />
-            </Popconfirm>
+            {!forPreview &&
+                <>
+                    <div className={Styles.item_quantity}>
+                        <span className={!item?.quantity || item?.quantity < 2 ? 'disabled' : ''} onClick={() => updateQuantity('decrement')}>
+                            <MinusOutlined />
+                        </span>
+                        <span>{item.quantity}</span>
+                        <span className={(item?.quantity || item?.quantity === 0) && item?.quantity < item.countInStock ? '' : 'disabled'} onClick={() => updateQuantity('increment')}>
+                            <PlusOutlined />
+                        </span>
+                    </div>
+                    <Popconfirm
+                        className={Styles.remove_icon}
+                        title="Remove this item from cart?"
+                        placement="topRight"
+                        onConfirm={removeItemFromCart}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <DeleteOutlined />
+                    </Popconfirm>
+                </>
+            }
         </div>
     )
 }

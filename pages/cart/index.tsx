@@ -9,7 +9,7 @@ const Cart = () => {
 
     useEffect(() => {
         if (!localStorage?.getItem('token')) {
-            router.push('/sign-in')
+            router.push('/sign-in?redirect=cart');
         }
     }, [])
 

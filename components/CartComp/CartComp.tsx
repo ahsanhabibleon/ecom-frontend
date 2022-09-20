@@ -42,7 +42,7 @@ const CartComp = () => {
                                         ({cartItems.reduce((a: number, c: ProductDataTypes) => a + (c?.quantity || 0), 0)} items)
                                     </span>
                                 </h4>
-                                <Button onClick={handleCheckout} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", fontWeight: 600 }}>
+                                <Button onClick={handleCheckout} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", color: "#333" }}>
                                     Proceed to Checkout
                                 </Button>
                                 <br />

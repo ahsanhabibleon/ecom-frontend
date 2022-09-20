@@ -13,3 +13,18 @@
   display: inline-block;
   margin-top: 15px;
 }
+.order_summary_row {
+  display: flex;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  &:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
+  }
+  span {
+    width: 60%;
+    &:nth-last-of-type(1) {
+      width: 40%;
+      font-weight: 600;
+    }
+  }
+}

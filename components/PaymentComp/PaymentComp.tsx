@@ -34,7 +34,7 @@ const PaymentComp = () => {
             </Radio.Group>
 
             <div className={Styles.btn}>
-                <Button onClick={handleProceedToPayment} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", fontWeight: 600 }}>
+                <Button onClick={handleProceedToPayment} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", color: "#333" }}>
                     Proceed to Payment
                 </Button>
             </div>

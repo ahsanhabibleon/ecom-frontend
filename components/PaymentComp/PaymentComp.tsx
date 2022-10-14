@@ -30,6 +30,7 @@ const PaymentComp = () => {
 
             <Radio.Group onChange={handlePaymentMethod} value={paymentMethod}>
                 <Radio value="bkash">Bkash</Radio>
+                <Radio value="stripe">Stripe</Radio>
                 <Radio value='card'>Credit/debit Cart</Radio>
             </Radio.Group>
 

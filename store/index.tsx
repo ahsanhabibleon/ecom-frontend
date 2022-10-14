@@ -57,6 +57,12 @@ const storeReducer = (state: InitialStateType, action: ReducerActionProps) => {
                 cart: { ...state.cart, cartItems }
             }
 
+        case 'CLEAR_CART':
+            return {
+                ...state,
+                cart: { ...state.cart, cartItems: [] }
+            }
+
         case "UPDATE_QUANTITY":
             cartItems = state?.cart?.cartItems?.map((item) =>
                 item._id === action.payload.item._id ? action.payload.item : item)

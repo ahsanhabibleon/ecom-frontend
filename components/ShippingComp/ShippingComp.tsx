@@ -166,7 +166,7 @@ const ShippingComp: React.FC = () => {
             >
                 <Select
                     placeholder="Division"
-                    disabled={divisions.length < 1}
+                    disabled={divisions?.length < 1}
                     showSearch
                     optionFilterProp="children"
                     onChange={onChange}

@@ -59,7 +59,7 @@ const ProductList = () => {
                 <h3>Featured Products</h3>
                 <div className={Styles.product_list}>
                     {loading ? <div>Loading...</div>
-                        : error ? <div>{error}</div>
+                        : error ? <div>Somenting went wrong! Please try again later!</div>
                             : products?.map((product, index) => (
                                 <ProductSingle product={product} key={`${product?.slug}_${index}`} />
                             ))}

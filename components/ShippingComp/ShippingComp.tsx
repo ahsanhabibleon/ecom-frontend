@@ -189,7 +189,7 @@ const ShippingComp: React.FC = () => {
             >
                 <Select
                     placeholder="District"
-                    disabled={districts.length < 1}
+                    disabled={districts?.length < 1}
                     showSearch
                     optionFilterProp="children"
                     onChange={onChange}

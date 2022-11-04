@@ -1,0 +1,18 @@
+.payment_form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  height: 100vh;
+}
+.stripe_element_wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 30px;
+  overflow: auto;
+  label {
+    margin-bottom: 10px;
+  }
+}

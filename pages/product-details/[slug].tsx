@@ -1,3 +1,4 @@
+import { Spin } from 'antd'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useReducer } from 'react'
@@ -72,9 +73,11 @@ const ProductDetailsPage = () => {
             <Head>
                 <title>{product?.name || 'E-COM'}</title>
             </Head>
-            {loading ? <div>Loading...</div>
-                : error ? <div>{error}</div>
-                    : <ProductSingle className='product_details' product={product} />}
+            <div className='container'>
+                {loading ? <Spin />
+                    : error ? <div>{error}</div>
+                        : <ProductSingle className='product_details' product={product} />}
+            </div>
         </MainLayout>
     )
 }

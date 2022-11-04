@@ -3,10 +3,11 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba($color: #000000, $alpha: 0.7);
   padding: 10px;
   font-size: 12px;
   text-transform: uppercase;
+  font-weight: 600;
   letter-spacing: 0.5px;
   line-height: 1;
   border-radius: 2px;
@@ -14,22 +15,23 @@
   cursor: pointer;
   transition: all 0.5s ease;
   &:hover {
-    color: rgba(255, 255, 255, 1);
+    color: rgba($color: #000000, $alpha: 1);
   }
 }
 .icon {
   font-size: 16px;
-  color: var(--warning-color);
+  color: #cb8b0c;
   position: relative;
   margin-top: -2px;
 }
 
 .profile_dropdown {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba($color: #000000, $alpha: 0.7);
   font-size: 12px;
   text-transform: uppercase;
   margin-right: 10px;
+  font-weight: 600;
   &:hover {
-    color: rgba(255, 255, 255, 1);
+    color: rgba($color: #000000, $alpha: 1);
   }
 }

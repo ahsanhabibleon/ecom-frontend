@@ -4,7 +4,9 @@ import {
     useStripe,
     useElements,
 } from "@stripe/react-stripe-js";
-import { APP_BASE_API } from "../../api";
+// import { APP_BASE_API } from "../../api";
+import { Button } from "antd";
+import Styles from './CheckoutForm.module.scss'
 
 export default function CheckoutForm() {
     const stripe = useStripe();
@@ -78,15 +80,17 @@ export default function CheckoutForm() {
     };
 
     return (
-        <form id="payment-form" onSubmit={handleSubmit}>
-            <PaymentElement id="payment-element" />
-            <button disabled={isLoading || !stripe || !elements} id="submit">
-                <span id="button-text">
-                    {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-                </span>
-            </button>
-            {/* Show any error or success messages */}
-            {message && <div id="payment-message">{message}</div>}
+        <form className={Styles.payment_form} id="payment-form" onSubmit={handleSubmit}>
+            <div className={Styles.stripe_element_wrapper}>
+                <PaymentElement id="payment-element" />
+                <Button htmlType="submit" type="primary" loading={isLoading} disabled={isLoading || !stripe || !elements} style={{ marginTop: 10 }}>
+                    <span id="button-text">
+                        Pay now
+                    </span>
+                </Button>
+                {/* Show any error or success messages */}
+                {message && <div id="payment-message">{message}</div>}
+            </div>
         </form>
     );
 }

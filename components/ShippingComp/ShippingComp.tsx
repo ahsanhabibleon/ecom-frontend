@@ -76,7 +76,7 @@ const ShippingComp: React.FC = () => {
                 post_code: values.post_code
             }
         })
-        await router.push('/payment')
+        await router.push('/payment-method')
     };
 
     const onChange = (changed: any, values: any) => {

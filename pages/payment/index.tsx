@@ -1,21 +1,31 @@
-import Head from 'next/head'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js';
+import { useRouter } from 'next/router';
 import React from 'react'
-import MainLayout from '../../components/MainLayout'
-import PaymentComp from '../../components/PaymentComp'
+import { STRIPE_PUBLISHABLE_KEY } from '../../api';
+import CheckoutForm from '../../components/CheckoutForm'
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY as string);
 
-function PaymentPage() {
+const Payment = () => {
+
+    const router = useRouter();
+    const clientSecret = router?.query?.clientSecret;
+
+    const appearance = {
+        theme: 'stripe',
+    };
+    const options: any = {
+        clientSecret,
+        appearance,
+    };
+
+    !clientSecret && <div>Something went wrong!</div>
+
     return (
-        <MainLayout>
-            <Head>
-                <title>Payment</title>
-            </Head>
-            <div className='container'>
-                <div className="login_register_container" style={{ alignItems: 'flex-start' }}>
-                    <PaymentComp />
-                </div>
-            </div>
-        </MainLayout>
+        <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm />
+        </Elements>
     )
 }
 
-export default PaymentPage
+export default Payment

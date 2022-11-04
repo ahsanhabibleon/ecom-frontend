@@ -7,12 +7,12 @@ html {
   font-size: 10px;
 }
 body {
-  background-color: var(--primary-color);
+  background-color: var(--grey-bg);
   font-size: 1.6rem;
   font-family: inherit;
 }
 h1 {
-  font-size: 40px;
+  font-size: 36px;
   font-weight: 600;
 }
 h3 {
@@ -50,4 +50,29 @@ h3 {
 .ant-card-head-title {
   font-size: 18px;
   font-weight: 600;
+}
+.ecom-header {
+  background: #fff;
+  box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.1);
+}
+.product_details {
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+  margin-top: 60px;
+  .ant-ribbon-wrapper {
+    width: 100%;
+    > a {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      > div {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 40px;
+        img {
+          max-height: 100%;
+        }
+      }
+    }
+  }
 }

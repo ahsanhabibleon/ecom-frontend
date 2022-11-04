@@ -98,7 +98,7 @@ const ReviewOrderComp = () => {
                         <div className={Styles.addressRow}>
                             <h4>Method:</h4> {paymentMethod || 'Not selected'}
                         </div>
-                        <Link href='/payment'>
+                        <Link href='/payment-method'>
                             <a className={Styles.editBtn}>Edit</a>
                         </Link>
                     </Card>

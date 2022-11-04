@@ -1,6 +1,9 @@
 .login_register_form {
   flex: 0 0 100%;
   margin: 0 auto;
+  padding: 30px;
+  border-radius: 5px;
+  background: #f6f6f6;
   .login-form-button {
     width: 100%;
   }
@@ -12,7 +15,6 @@
 }
 .login_register_container {
   padding: 6rem 2rem;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;

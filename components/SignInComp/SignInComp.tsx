@@ -61,14 +61,18 @@ const SignInComp = ({ redirectUrl }: { redirectUrl: string }) => {
             <h1>Sign In</h1>
             <Form.Item
                 name="email"
-                rules={[{
-                    type: 'email',
-                    message: 'The input is not valid email address',
-                },
-                {
-                    required: true,
-                    message: 'Fill up email address',
-                },]}
+                rules={
+                    [
+                        {
+                            type: 'email',
+                            message: 'The input is not valid email address',
+                        },
+                        {
+                            required: true,
+                            message: 'Fill up email address',
+                        }
+                    ]
+                }
             >
                 <Input type="email" prefix={<MailOutlined className="site-form-item-icon" />} placeholder="email" />
             </Form.Item>
@@ -82,21 +86,25 @@ const SignInComp = ({ redirectUrl }: { redirectUrl: string }) => {
                     placeholder="Password"
                 />
             </Form.Item>
-            <Form.Item>
-                {/* <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item> */}
-
-                <a className="login-form-forgot" href="">
-                    Forgot password
-                </a>
-            </Form.Item>
 
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in
                 </Button>
-                Or <Link href="/sign-up">register now!</Link>
+            </Form.Item>
+
+            {/* <Form.Item>
+                <Form.Item name="remember" valuePropName="checked" noStyle>
+                    <Checkbox>Remember me</Checkbox>
+                </Form.Item>
+
+                <a className="login-form-forgot" href="">
+                    Forgot password
+                </a>
+            </Form.Item> */}
+
+            <Form.Item>
+                Or <Link href="/sign-up">Sign up for a new account!</Link>
             </Form.Item>
         </Form>
     );

@@ -1,46 +1,29 @@
-import { Button, Card, Col, Row } from "antd"
+import { Button, Card, Col, notification, Row, Spin } from "antd"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 import CartItem from "../../components/CartComp/CartItems"
-import CheckoutForm from "../../components/CheckoutForm/CheckoutForm"
 import MainLayout from "../../components/MainLayout"
 import { ProductDataTypes } from "../../components/ProductList/ProductList.types"
 import { capitalizeFirstLetter } from "../../utils"
 import bkash from "../../utils/bkash"
 import Styles from './order.module.scss'
 import { STRIPE_PUBLISHABLE_KEY } from "../../api";
+import axios from "axios";
+import { usePayPalScriptReducer, PayPalButtons, SCRIPT_LOADING_STATE } from "@paypal/react-paypal-js";
 
-const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY as string);
 
-const orderDetails = () => {
+
+const OrderDetails = () => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
     const [orderDetails, setOrderDetails] = useState<any>(null);
-    const [clientSecret, setClientSecret] = useState("");
+    const [{ options, isResolved, isPending, isRejected }, dispatch] = usePayPalScriptReducer();
 
-    const router = useRouter()
-    const orderId = router?.query?.id
-    console.log({ orderDetails })
 
-    useEffect(() => {
-        if (orderId) {
-
-            fetch(`/api/orders/${orderId}`, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            }).then(res => res.json()).then((data) => {
-                console.log({ data })
-                setOrderDetails(data)
-            })
-        }
-    }, [orderId])
+    const router = useRouter();
+    const orderId = router?.query?.id;
 
     const handleProceedToPayment = async (method: string) => {
-        console.log({ method, orderDetails })
-
         switch (method) {
             case 'bkash':
                 const paymentRequest: any = {
@@ -66,31 +49,82 @@ const orderDetails = () => {
                     .then(response => response.json())
                     .then(data => {
                         console.log({ data });
-                        setClientSecret(data.clientSecret)
+                        data.clientSecret && router.push('/payment?clientSecret=' + data.clientSecret)
                     });
-
 
             default:
                 return false
         }
+    }
 
+    const createOrder = (data: any, actions: any) => {
+        return actions.order.create({
+            purchase_units: [
+                {
+                    amount: {
+                        value: orderDetails?.totalPrice || 100,
+                    },
+                },
+            ],
+        }).then((orderId: string) => orderId);
+    }
+    const onApprove = (data: any, actions: any) => {
+        return actions.order.capture().then((details: any) => {
+            console.log({ details })
+            const name = details.payer.name.given_name;
+            // alert(`Transaction completed by ${name}`);
+            notification.success({
+                message: `Transaction completed by ${name}`
+            })
+        });
+    }
+
+    const onError = (error: any) => {
+        console.log({ error })
+        notification.error({
+            message: 'Payment not successfull!'
+        })
     }
 
     useEffect(() => {
-        if (!orderId || orderDetails?.orderedItems?.length < 1) {
-            router.push('/')
-        } else if (!token) {
+        if (!token) {
             router.push('/login')
-        }
-    }, [token, orderId, orderDetails?.orderedItems])
+        } else if (orderId) {
+            axios.get(`/api/orders/${orderId}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            }).then((data) => {
+                setOrderDetails(data?.data)
+            }).catch(error => {
+                console.log({ error })
+                if (error?.response?.status === 404) {
+                    router.push('/')
+                }
+                notification.error({
+                    message: error?.response?.data?.messege
+                })
+            })
 
-    const appearance = {
-        theme: 'stripe',
-    };
-    const options: any = {
-        clientSecret,
-        appearance,
-    };
+            axios.get('/api/keys/paypal')
+                .then(data => {
+                    if (data?.data) {
+                        dispatch({
+                            type: "resetOptions",
+                            value: {
+                                ...options,
+                                "client-id": data?.data,
+                                currency: 'USD'
+                            },
+                        });
+                        dispatch({
+                            // @ts-ignore
+                            type: 'setLoadingStatus', value: 'pending'
+                        })
+                    }
+                });
+        }
+    }, [token, orderId, dispatch])
 
     return (
         <>
@@ -165,22 +199,35 @@ const orderDetails = () => {
                                                 ${orderDetails?.totalPrice}
                                             </span>
                                         </div>
-                                        <Button
-                                            // loading={loading}
-                                            onClick={() => handleProceedToPayment('bkash')} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", color: '#333', marginTop: 10 }}>
-                                            Pay with BKash
-                                        </Button>
-                                        <Button
-                                            // loading={loading}
-                                            onClick={() => handleProceedToPayment('stripe')} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", color: '#333', marginTop: 10 }}>
-                                            Pay with Stripe
-                                        </Button>
-                                        <Button
-                                            // loading={loading}
-                                            disabled
-                                            onClick={() => handleProceedToPayment('card')} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", color: '#333', marginTop: 10, opacity: .5 }}>
-                                            Pay with Card
-                                        </Button>
+                                        {!orderDetails?.isPaid && <>
+                                            {/* <Button
+                                                // loading={loading}
+                                                onClick={() => handleProceedToPayment('bkash')} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", color: '#333', marginTop: 10 }}>
+                                                Pay with BKash
+                                            </Button> */}
+                                            {/* <Button
+                                                // loading={loading}
+                                                disabled
+                                                onClick={() => handleProceedToPayment('card')} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", color: '#333', marginTop: 10, opacity: .5 }}>
+                                                Pay with Card
+                                            </Button> */}
+
+                                            <Button
+                                                // loading={loading}
+
+                                                onClick={() => handleProceedToPayment('stripe')} type='primary' style={{ backgroundColor: "#faad14", borderColor: "#faad14", color: '#333', marginTop: 10, width: '100%' }}>
+                                                Pay with Stripe
+                                            </Button>
+                                            {isPending ? <Spin /> : null}
+                                            {isResolved && <div style={{ marginTop: 10 }}>
+                                                <PayPalButtons
+                                                    style={{ layout: "horizontal" }}
+                                                    createOrder={createOrder}
+                                                    onApprove={onApprove}
+                                                    onError={onError}
+                                                />
+                                            </div>}
+                                        </>}
                                     </Card>
                                 </Col>
                             </Row>
@@ -188,16 +235,9 @@ const orderDetails = () => {
                     </div>
                 </div>
             </MainLayout>
-
-            {clientSecret && (
-                <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm />
-                </Elements>
-            )
-            }
         </>
 
     )
 }
 
-export default orderDetails
+export default OrderDetails

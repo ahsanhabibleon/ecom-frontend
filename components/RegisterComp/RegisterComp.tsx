@@ -11,6 +11,7 @@ import {
     Row,
     Select,
 } from 'antd';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -332,6 +333,10 @@ const Register: React.FC = () => {
                 <Button type="primary" htmlType="submit">
                     Register
                 </Button>
+            </Form.Item>
+            <Form.Item {...tailFormItemLayout}>
+                Aleady have an account? {" "}
+                <Link href="/sign-in">Log in</Link>
             </Form.Item>
         </Form>
     );
